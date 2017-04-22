@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VGMCollectionViewController.h"
 
 @interface RecipeNetworking : NSObject <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
 -(id)initWitURL:(NSString*) url;
+-(NSMutableDictionary *)getJsonArray;
 @property(nonatomic, retain) NSMutableDictionary *recipeData;
+@property UICollectionViewController *collectionView;
 @end

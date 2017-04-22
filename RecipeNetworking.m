@@ -12,8 +12,8 @@
 @implementation RecipeNetworking
 
 -(id)initWitURL:(NSString *)url{
-    VGMCollectionViewController *collectionView  = [[VGMCollectionViewController alloc] init];
-    [collectionView setRecipeReference:self];
+//    VGMCollectionViewController *collectionView  = [[VGMCollectionViewController alloc] init];
+//    [collectionView setRecipeReference:self];
     // Create the request.
     NSURL *urlString = [[NSURL alloc]initWithString:url];
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:urlString];
@@ -35,7 +35,9 @@
                     
                     _recipeData = [[NSMutableDictionary alloc]init];
                     [_recipeData addEntriesFromDictionary:jsonResponse];
+                    //[UICollectionView reloadInputViews];
                     NSLog(@"%@",_recipeData);
+                    //NSLog(@"FOOD: %@",[_recipeData valueForKey:@"count"]);
                     
                 }
             }  else {
@@ -49,6 +51,10 @@
         
     }]resume];
     return self;
+}
+
+-(NSMutableDictionary *)getJsonArray{
+    return _recipeData;
 }
 
 
