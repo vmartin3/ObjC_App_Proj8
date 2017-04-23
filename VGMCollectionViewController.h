@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "RecipeNetworking.h"
+#import "RecipeViewController.h"
 
 @interface VGMCollectionViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
    // @property (nonatomic, retain) RecipeNetworking *recipeReference;
     @property(nonatomic, retain) NSMutableDictionary *allRecipeData;
     @property(nonatomic, retain) NSString *recipeImages;
+    @property(nonatomic, retain) NSString *recipeStringValue;
+    @property(nonatomic, retain) NSMutableArray *recipeID;
+
 @end

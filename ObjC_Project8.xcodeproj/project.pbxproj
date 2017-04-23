@@ -18,6 +18,7 @@
 		768D1DE91EA903DA0089E05E /* VGMCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D1DE81EA903DA0089E05E /* VGMCollectionViewCell.m */; };
 		768D1DED1EA917A60089E05E /* spagetti.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 768D1DEC1EA917A60089E05E /* spagetti.jpg */; };
 		768D1DF21EA962040089E05E /* RecipeNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D1DF11EA962040089E05E /* RecipeNetworking.m */; };
+		768D1DF51EABDFE70089E05E /* RecipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D1DF41EABDFE70089E05E /* RecipeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,8 @@
 		768D1DEC1EA917A60089E05E /* spagetti.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = spagetti.jpg; sourceTree = SOURCE_ROOT; };
 		768D1DF01EA962040089E05E /* RecipeNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeNetworking.h; sourceTree = "<group>"; };
 		768D1DF11EA962040089E05E /* RecipeNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeNetworking.m; sourceTree = "<group>"; };
+		768D1DF31EABDFE70089E05E /* RecipeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecipeViewController.h; sourceTree = "<group>"; };
+		768D1DF41EABDFE70089E05E /* RecipeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecipeViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +117,8 @@
 				768D1DEC1EA917A60089E05E /* spagetti.jpg */,
 				768D1DE41EA903A90089E05E /* VGMCollectionViewController.h */,
 				768D1DE51EA903A90089E05E /* VGMCollectionViewController.m */,
+				768D1DF31EABDFE70089E05E /* RecipeViewController.h */,
+				768D1DF41EABDFE70089E05E /* RecipeViewController.m */,
 				768D1DE71EA903DA0089E05E /* VGMCollectionViewCell.h */,
 				768D1DE81EA903DA0089E05E /* VGMCollectionViewCell.m */,
 				768D1DAD1EA9009C0089E05E /* AppDelegate.h */,
@@ -289,6 +294,7 @@
 			files = (
 				768D1DE61EA903A90089E05E /* VGMCollectionViewController.m in Sources */,
 				768D1DF21EA962040089E05E /* RecipeNetworking.m in Sources */,
+				768D1DF51EABDFE70089E05E /* RecipeViewController.m in Sources */,
 				768D1DE91EA903DA0089E05E /* VGMCollectionViewCell.m in Sources */,
 				768D1DAF1EA9009C0089E05E /* AppDelegate.m in Sources */,
 				768D1DAC1EA9009C0089E05E /* main.m in Sources */,

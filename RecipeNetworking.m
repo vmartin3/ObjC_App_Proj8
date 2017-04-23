@@ -36,7 +36,7 @@
                     _recipeData = [[NSMutableDictionary alloc]init];
                     [_recipeData addEntriesFromDictionary:jsonResponse];
                     //[UICollectionView reloadInputViews];
-                    NSLog(@"%@",_recipeData);
+                    //NSLog(@"%@",_recipeData);
                     //NSLog(@"FOOD: %@",[_recipeData valueForKey:@"count"]);
                     
                 }

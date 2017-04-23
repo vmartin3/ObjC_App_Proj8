@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface VGMCollectionViewCell : UICollectionViewCell
-@property (weak, nonatomic) IBOutlet UIButton *foodButton;
+@property (weak, nonatomic) IBOutlet UILabel *foodTitle;
+@property (weak, nonatomic) IBOutlet UIImageView *foodImage;
 @end
