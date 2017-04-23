@@ -9,7 +9,7 @@
 #import "VGMCollectionViewController.h"
 #import "VGMCollectionViewCell.h"
 
-RecipeNetworking *networkReference;
+RecipeNetworking *recipeDataNetworkCall;
 @interface VGMCollectionViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
 @end
@@ -18,48 +18,40 @@ RecipeNetworking *networkReference;
 
 
 - (void)viewDidLoad {
-    _recipeID = [[NSMutableArray alloc]initWithCapacity:_allRecipeData.count];
+    _recipeIDs = [[NSMutableArray alloc]initWithCapacity:_recipeDetails.count];
+    _recipeDetails = [[NSMutableDictionary alloc]init];
+    
+    //MARK: - Fetch Meal Data
+    //Fetch All Recipe Data Once when View First Loads
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-    networkReference = [[RecipeNetworking alloc]initWitURL:@"http://food2fork.com/api/search?key=ff64d2b133c5b0fe9d9f9489538ba76f&q=shredded%20chicken"];
+    recipeDataNetworkCall = [[RecipeNetworking alloc]initWitURL:@"http://food2fork.com/api/search?key=ff64d2b133c5b0fe9d9f9489538ba76f&q=shredded%20chicken"];
     });
     
+    //Assign Recipe Data to a local variable and reload table with the new information after request call is completed
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.7 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        _allRecipeData=[networkReference getJsonArray];
+        _recipeDetails=[recipeDataNetworkCall getJsonArray];
         [self.collectionView reloadData];
     });
-
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
--(void)segue: (id)sender
-{
-    [self getRecipe:_recipeStringValue];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.7 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-       [self performSegueWithIdentifier:@"Detail" sender:self];
-    });
-    
-    
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    //RecipeViewController *myDestinationViewController = [segue destinationViewController];
-    RecipeViewController *myDestinationViewController = [(UINavigationController*)segue.destinationViewController topViewController];
-    //NSLog(@"%@", [networkReference getJsonArray]);
-    
-    //MARK: ERROR IS HERE FIX
-    myDestinationViewController.recipeItem = [[NSMutableArray alloc]initWithObjects:[networkReference getJsonArray], nil];
+    //MARK: - Prep next View Controller
+    //Passing Recipe Details for Selected Meal to the RecipeViewController
+    RecipeViewController *recipeDetailsVC = [(UINavigationController*)segue.destinationViewController topViewController];
+    recipeDetailsVC.recipeItem = [[NSMutableArray alloc]initWithObjects:[recipeDataNetworkCall getJsonArray], nil];
 }
 
 -(void)getRecipe: (NSString *)recipeID {
-   NSLog(@"%@", [_recipeID description]);
+    //MARK: - Fetch Recipe Details
+    //Making an API Network call to get recipe details for specific meal the user selects based on recipeID
         NSString *urlString = [NSString stringWithFormat:@"http://food2fork.com/api/get?key=ff64d2b133c5b0fe9d9f9489538ba76f&rId=%@",recipeID];
-        //NSLog(@"%@", urlString);
-    networkReference = [[RecipeNetworking alloc]initWitURL:urlString];
+   recipeDataNetworkCall = [[RecipeNetworking alloc]initWitURL:urlString];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -68,27 +60,29 @@ RecipeNetworking *networkReference;
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [[_allRecipeData valueForKey:@"count"] integerValue];
+    //Returns the number of cells needed based on the number of recipes returned by the API call
+    return [[_recipeDetails valueForKey:@"count"] integerValue];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     VGMCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
     
-    
-    
+    //MARK: - Populating Cells
+    //Updating UI to show the food cells with their respective images and titles on the main page
     dispatch_async(dispatch_get_main_queue(), ^{
-        
-    NSData *foodPciture =[NSData dataWithContentsOfURL:[NSURL URLWithString:[[[_allRecipeData valueForKey:@"recipes"]objectAtIndex:indexPath.row]valueForKey:@"image_url"]]];
+    NSData *foodPciture =[NSData dataWithContentsOfURL:[NSURL URLWithString:[[[_recipeDetails valueForKey:@"recipes"]objectAtIndex:indexPath.row]valueForKey:@"image_url"]]];
         cell.foodImage.image = [UIImage imageWithData:foodPciture];
-        cell.foodTitle.text = [[[_allRecipeData valueForKey:@"recipes"]objectAtIndex:indexPath.row]valueForKey:@"title"];
+        cell.foodTitle.text = [[[_recipeDetails valueForKey:@"recipes"]objectAtIndex:indexPath.row]valueForKey:@"title"];
     });
 
-    [_recipeID addObject:[[[_allRecipeData valueForKey:@"recipes"]objectAtIndex:indexPath.row]valueForKey:@"recipe_id"]];
-    _recipeStringValue = [_recipeID objectAtIndex:indexPath.row];
-    cell.foodImage.userInteractionEnabled = YES;
+    //Parses recipe details for that meal and stores that recipe ID in a sepearte array
+    [_recipeIDs addObject:[[[_recipeDetails valueForKey:@"recipes"]objectAtIndex:indexPath.row]valueForKey:@"recipe_id"]];
     
-    UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(segue:)];
+    //MARK: - UITap Gesture Setup
+    cell.foodImage.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] init];
     tapped.numberOfTapsRequired = 1;
+    tapped.cancelsTouchesInView = NO;
     [cell.foodImage addGestureRecognizer:tapped];
     
      return cell;
@@ -96,17 +90,21 @@ RecipeNetworking *networkReference;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"ROW SELECTED");
-    
+    [self getRecipe:[_recipeIDs objectAtIndex:indexPath.row]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.7 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self performSegueWithIdentifier:@"Detail" sender:self];
+    });
+
 }
 
+//Sets up 3 columns of cells with no space between for the collection view
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
-    float cellWidth = screenWidth / 3.0; //Replace the divisor with the column count requirement. Make sure to have it in float.
+    float cellWidth = screenWidth / 3.0;
     CGSize size = CGSizeMake(cellWidth, cellWidth);
     
     return size;

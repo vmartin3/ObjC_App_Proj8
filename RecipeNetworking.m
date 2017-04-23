@@ -12,9 +12,6 @@
 @implementation RecipeNetworking
 
 -(id)initWitURL:(NSString *)url{
-//    VGMCollectionViewController *collectionView  = [[VGMCollectionViewController alloc] init];
-//    [collectionView setRecipeReference:self];
-    // Create the request.
     NSURL *urlString = [[NSURL alloc]initWithString:url];
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:urlString];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -33,12 +30,8 @@
                     // Success Parsing JSON
                     // Log NSDictionary response:
                     
-                    _recipeData = [[NSMutableDictionary alloc]init];
-                    [_recipeData addEntriesFromDictionary:jsonResponse];
-                    //[UICollectionView reloadInputViews];
-                    //NSLog(@"%@",_recipeData);
-                    //NSLog(@"FOOD: %@",[_recipeData valueForKey:@"count"]);
-                    
+                    _mealData = [[NSMutableDictionary alloc]init];
+                    [_mealData addEntriesFromDictionary:jsonResponse];
                 }
             }  else {
                 //Web server is returning an error
@@ -54,7 +47,7 @@
 }
 
 -(NSMutableDictionary *)getJsonArray{
-    return _recipeData;
+    return _mealData;
 }
 
 

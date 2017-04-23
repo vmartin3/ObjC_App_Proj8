@@ -18,10 +18,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //MARK: - Recipe Details VC Setup
     _recipeTitle.text = [[_recipeItem valueForKeyPath:@"recipe.title"]objectAtIndex:0 ];
     NSURL *url = [NSURL URLWithString:[[_recipeItem valueForKeyPath:@"recipe.image_url"]objectAtIndex:0]];
     NSData *data = [NSData dataWithContentsOfURL:url];
     _recipeImage.image = [UIImage imageWithData:data];
+    [self roundImage];
+}
+
+-(void)roundImage{
+    [self.view layoutIfNeeded];
+    self.recipeImage.layer.cornerRadius = 60;
+    self.recipeImage.clipsToBounds = YES;
+    self.recipeImage.layer.borderWidth = 5.0f;
+    self.recipeImage.layer.borderColor = [UIColor grayColor].CGColor;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -31,7 +41,6 @@
 
 - (IBAction)backButtonPressed:(id)sender {
     [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        
     }];
 }
 
@@ -40,7 +49,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Number of rows is the number of time zones in the region for the specified section.
+    // Number of rows in the ingredients table
     return [[[_recipeItem valueForKeyPath:@"recipe.ingredients"] objectAtIndex:0] count];
 }
 

@@ -12,6 +12,6 @@
 @interface RecipeNetworking : NSObject <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
 -(id)initWitURL:(NSString*) url;
 -(NSMutableDictionary *)getJsonArray;
-@property(nonatomic, retain) NSMutableDictionary *recipeData;
+@property(nonatomic, retain) NSMutableDictionary *mealData;
 @property UICollectionViewController *collectionView;
 @end
