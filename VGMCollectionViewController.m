@@ -20,12 +20,14 @@ RecipeNetworking *recipeDataNetworkCall;
 - (void)viewDidLoad {
     _recipeIDs = [[NSMutableArray alloc]initWithCapacity:_recipeDetails.count];
     _recipeDetails = [[NSMutableDictionary alloc]init];
+    _apiKey = @"ff64d2b133c5b0fe9d9f9489538ba76f";
     
     //MARK: - Fetch Meal Data
     //Fetch All Recipe Data Once when View First Loads
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-    recipeDataNetworkCall = [[RecipeNetworking alloc]initWitURL:@"http://food2fork.com/api/search?key=ff64d2b133c5b0fe9d9f9489538ba76f&q=shredded%20chicken"];
+    NSString *url = [NSString stringWithFormat:@"http://food2fork.com/api/search?key=%@&q=shredded%%20chicken", _apiKey];
+    recipeDataNetworkCall = [[RecipeNetworking alloc]initWitURL:url];
     });
     
     //Assign Recipe Data to a local variable and reload table with the new information after request call is completed
@@ -50,7 +52,7 @@ RecipeNetworking *recipeDataNetworkCall;
 -(void)getRecipe: (NSString *)recipeID {
     //MARK: - Fetch Recipe Details
     //Making an API Network call to get recipe details for specific meal the user selects based on recipeID
-        NSString *urlString = [NSString stringWithFormat:@"http://food2fork.com/api/get?key=ff64d2b133c5b0fe9d9f9489538ba76f&rId=%@",recipeID];
+        NSString *urlString = [NSString stringWithFormat:@"http://food2fork.com/api/get?key=%@&rId=%@",_apiKey,recipeID];
    recipeDataNetworkCall = [[RecipeNetworking alloc]initWitURL:urlString];
 }
 

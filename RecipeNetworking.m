@@ -18,7 +18,7 @@
     [[session dataTaskWithURL:urlString completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
         if (!error) {
-            // Success
+            // If call is succesful run this block of code to get recipe data
             if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
                 NSError *jsonError;
                 NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
@@ -27,17 +27,15 @@
                     NSLog(@"There has been an error parsing the JSON");
                     
                 } else {
-                    // Success Parsing JSON
-                    // Log NSDictionary response:
-                    
+                    // Successfully Parsed JSON
                     _mealData = [[NSMutableDictionary alloc]init];
                     [_mealData addEntriesFromDictionary:jsonResponse];
                 }
             }  else {
-                //Web server is returning an error
+                NSLog(@"Web Service Error Occured");
             }
         } else {
-            // Fail
+            // An Error occured
             NSLog(@"error : %@", error.description);
         }
         

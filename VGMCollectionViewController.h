@@ -13,4 +13,5 @@
 @interface VGMCollectionViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
     @property(nonatomic, retain) NSMutableDictionary *recipeDetails;
     @property(nonatomic, retain) NSMutableArray *recipeIDs;
+     @property(nonatomic, retain) NSString *apiKey;
 @end
