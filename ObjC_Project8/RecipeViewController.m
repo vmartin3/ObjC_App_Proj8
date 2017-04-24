@@ -56,9 +56,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *MyIdentifier = @"RecipeLine";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
-    if (cell == nil) {
-        //cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:MyIdentifier]];
-    }
     cell.textLabel.text = [[[_recipeItem valueForKeyPath:@"recipe.ingredients"] objectAtIndex:0] objectAtIndex:indexPath.row];
     return cell;
 }
